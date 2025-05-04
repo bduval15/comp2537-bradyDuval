@@ -41,11 +41,14 @@ app.use(
 // Configure sessions in MongoDB (encrypted + 1 hr max session length)
 const mongoStore = MongoStore.create({
   mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
+  
+  // Encrypts session data before storing
   crypto: { secret: mongodb_session_secret },
   ttl: expireTime / 1000
 })
 
 app.use(session({
+  // Signs the cookie
   secret: node_session_secret,
   store: mongoStore,
   saveUninitialized: false,
@@ -148,6 +151,7 @@ app.post('/login', async (req, res) => {
     email: Joi.string().email().required(),
     password: Joi.string().required()
   });
+  
   const { error } = schema.validate({ email, password });
   if (error) {
     // show the Joi error right under the form
