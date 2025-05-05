@@ -32,16 +32,12 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 const userCollection = database.db(mongodb_database).collection('users');
 
 app.use(express.urlencoded({ extended: false }));
-
-app.use(
-  '/gifs',
-  express.static(path.join(__dirname, 'gifs'))
-);
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure sessions in MongoDB (encrypted + 1 hr max session length)
 const mongoStore = MongoStore.create({
   mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-  
+
   // Encrypts session data before storing
   crypto: { secret: mongodb_session_secret },
   ttl: expireTime / 1000
@@ -120,7 +116,6 @@ app.post('/signup', async (req, res) => {
   res.redirect('/members');
 });
 
-
 function renderLogin(res, errorMessage = '') {
   const errorHtml = errorMessage
     ? `<p style="color:red; margin-bottom:1em;">${errorMessage}</p>`
@@ -151,7 +146,7 @@ app.post('/login', async (req, res) => {
     email: Joi.string().email().required(),
     password: Joi.string().required()
   });
-  
+
   const { error } = schema.validate({ email, password });
   if (error) {
     // show the Joi error right under the form
@@ -172,7 +167,6 @@ app.post('/login', async (req, res) => {
   req.session.username = user.name;
   res.redirect('/members');
 });
-
 
 // Members only page
 app.get('/members', (req, res) => {
@@ -198,13 +192,12 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404)
-  res.send("Page not found – 404");
-});
-
 // Localhost for testing before deployment
 app.listen(port, () => {
   console.log("Node application listening on port " + port);
+});
+
+// 404 handler
+app.get(/.*/, (req, res) => {
+  res.status(404).send("Page not found – 404");
 });
