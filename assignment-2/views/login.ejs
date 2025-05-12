@@ -3,7 +3,11 @@
   <main class="page-center">
     <form class="text-center" action="/login" method="POST" style="max-width: 330px; width:100%;">
       <h1 class="h3 mb-3 fw-normal">Please log in</h1>
-
+      <% if (error) { %>
+      <div class="alert alert-danger text-center">
+        <%= error %>
+      </div>
+    <% } %>
       <div class="form-floating mb-2">
         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         <label for="email">Email address</label>
