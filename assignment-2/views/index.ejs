@@ -1,0 +1,20 @@
+<%- include('templates/header') %>
+
+<main class="d-flex flex-column align-items-center justify-content-center" 
+      style="min-height: calc(100vh - 280px);">
+  <% if (!session.user) { %>
+    <h1 class="mb-4">Welcome to MySite</h1>
+    <div>
+      <a href="/signup" class="btn btn-success me-2">Sign Up</a>
+      <a href="/login"  class="btn btn-primary">Log In</a>
+    </div>
+  <% } else { %>
+    <h1 class="mb-4">Hello, <%= session.user.name %>!</h1>
+    <div>
+      <a href="/members" class="btn btn-primary me-2">Go to Members Area</a>
+      <a href="/logout"  class="btn btn-secondary">Log Out</a>
+    </div>
+  <% } %>
+</main>
+
+<%- include('templates/footer') %>

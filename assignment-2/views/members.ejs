@@ -1,0 +1,17 @@
+<%- include('templates/header') %>
+
+  <main class="page-center">
+    <h1 class="neon-heading text-center mb-5">Butters Fan Club!</h1>
+
+    <div class="row g-4 justify-content-center w-100 px-3">
+      <% images.forEach(img=> { %>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="ratio ratio-4x3">
+            <img src="/gifs/<%= img %>" alt="Butters gif" class="img-fluid rounded neon-card">
+          </div>
+        </div>
+        <% }) %>
+    </div>
+  </main>
+
+  <%- include('templates/footer') %>

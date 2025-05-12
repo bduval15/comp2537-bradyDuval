@@ -1,0 +1,120 @@
+body {
+  background: radial-gradient(circle at top left,
+      #2b003a 0%, #000 80%);
+  color: #eee;
+  overflow-x: hidden;
+}
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 280px);
+}
+
+body::before {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(transparent, transparent 1px,
+      rgba(0, 0, 0, 0.2) 2px);
+  z-index: 9999;
+  opacity: 0.2;
+}
+
+.nav-pills .nav-link {
+  color: #ff66cc;
+  text-shadow: 0 0 8px rgba(255, 102, 204, 0.7);
+  transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link.active {
+  background: linear-gradient(45deg, #ff0066, #6600ff);
+  color: white !important;
+  box-shadow:
+    0 0 8px #ff0066,
+    0 0 16px #6600ff;
+}
+
+h1 {
+  color: #ff99ff;
+  text-shadow:
+    0 0 8px #ff99ff,
+    0 0 16px #ff33ff;
+}
+
+.btn {
+  border: 2px solid #ff33cc;
+  background: transparent;
+  color: #ff33cc;
+  text-shadow: 0 0 5px rgba(255, 51, 204, 0.7);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #ff33cc;
+  color: #000;
+  box-shadow:
+    0 0 8px #ff33cc,
+    0 0 16px #ff33cc;
+}
+
+footer {
+  border-top: 1px solid #444;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+footer a {
+  color: #ff66cc;
+  margin: 0 0.5rem;
+  text-shadow: 0 0 5px rgba(255, 102, 204, 0.7);
+}
+
+.neon-heading {
+  color: #ff99ff;
+  text-shadow:
+    0 0 8px #ff99ff,
+    0 0 16px #ff33ff;
+}
+
+.neon-card {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 0 8px rgba(255, 51, 204, 0.6),
+    0 0 16px rgba(102, 0, 255, 0.6);
+  border-radius: 1rem;
+}
+
+.neon-text {
+  text-shadow:
+    0 0 4px #ff33cc,
+    0 0 8px #ff0066;
+}
+
+.neon-btn {
+  border-width: 2px;
+  text-shadow: 0 0 5px rgba(255, 51, 204, 0.7);
+}
+.neon-btn:hover {
+  box-shadow:
+    0 0 8px rgba(255, 51, 204, 0.8),
+    0 0 12px rgba(102, 0, 255, 0.8);
+}
+
+.ratio img {
+  box-shadow:
+    0 0 8px rgba(255, 51, 204, 0.6),
+    0 0 16px rgba(102, 0, 255, 0.6);
+  transition: transform 0.2s ease;
+}
+.ratio img:hover {
+  transform: scale(1.05);
+}

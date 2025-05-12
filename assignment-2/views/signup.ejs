@@ -1,0 +1,29 @@
+<%- include('templates/header') %>
+
+<main class="page-center">
+  <div class="w-100" style="max-width: 400px;">
+    <h1 class="mb-4 text-center">Please sign up</h1>
+
+    <% if (error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <form action="/signup" method="POST">
+      <div class="mb-3">
+        <label for="name"     class="form-label">Name</label>
+        <input type="text"    class="form-control" id="name"     name="name"     required>
+      </div>
+      <div class="mb-3">
+        <label for="email"    class="form-label">Email</label>
+        <input type="email"   class="form-control" id="email"    name="email"    required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password"class="form-control" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+  </div>
+</main>
+
+<%- include('templates/footer') %>
