@@ -1,0 +1,289 @@
+/* 1) Theme variables */
+:root {
+  --theme-color: #6390F0;
+  --theme-bg: rgba(99, 144, 240, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  align-items: center;
+}
+
+header {
+  padding: 2rem;
+  text-align: center;
+  margin: 0 auto; 
+}
+
+/* 2) Controls & Status */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  color: var(--fg);
+  /* JS will override per type */
+}
+
+/* pill styling for every direct child in controls */
+.controls>* {
+  background: var(--theme-bg);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin: 0.25rem 0;
+}
+
+.controls select {
+  background: transparent;
+  border: none;
+  color: inherit;
+}
+
+/* 3) Board grid layouts */
+.board {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+body.light {
+  --bg: #f0f0f0;
+  --fg: #222;
+}
+
+body.dark {
+  --bg: #222;
+  --fg: #f0f0f0;
+}
+
+.board.easy {
+  grid-template-columns: repeat(4, 100px);
+}
+
+.board.medium {
+  grid-template-columns: repeat(6, 100px);
+}
+
+.board.hard {
+  grid-template-columns: repeat(6, 100px);
+}
+
+/* 4) Card styles */
+.card {
+  width: 100px;
+  height: 100px;
+  perspective: 600px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-inner>div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+}
+
+.card-front {
+  transform: rotateY(180deg);
+  background-size: cover;
+  background-position: center;
+}
+
+.card-back {
+  background-image: url('back.webp');
+  background-size: cover;
+}
+
+.card.matched .card-inner,
+.board.locked .card-inner {
+  pointer-events: none;
+}
+
+/* 5) Glowing controls buttons */
+.controls button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--theme-color);
+  color: var(--bg);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--theme-color);
+  transition: box-shadow 0.3s, transform 0.1s;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.controls button:hover {
+  box-shadow: 0 0 16px var(--theme-color);
+  transform: translateY(-2px);
+}
+
+.controls button:active {
+  transform: translateY(0);
+}
+
+.controls>label,
+.controls>button,
+.status span {
+  font-size: 0.95rem;
+}
+
+
+.controls>label {
+  display: inline-flex;
+  align-items: center;
+}
+
+
+.controls>label>select {
+  margin-left: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+/* 6) Game Over message */
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg);
+  color: var(--fg);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  display: none;
+}
+
+.message.show {
+  display: block;
+}
+
+/* 7) Winning modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--bg);
+  color: var(--fg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 90%;
+  border: 5px solid var(--theme-color);
+}
+
+.modal img {
+  max-width: 120px;
+  margin-bottom: 1rem;
+}
+
+.modal button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--theme-color);
+  color: var(--bg);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--theme-color);
+  transition: box-shadow 0.3s, transform 0.1s;
+}
+
+.modal button:hover {
+  box-shadow: 0 0 16px var(--theme-color);
+  transform: translateY(-2px);
+}
+
+.modal button:active {
+  transform: translateY(0);
+}
+
+#scroller,
+#scroller-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 100;
+  align-self: stretch;
+}
+
+#scroller {
+  top: 0;
+}
+#scroller-bottom {
+  bottom: 0;
+}
+
+#scroller .inner,
+#scroller-bottom .inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  animation: scroll-left 20s linear infinite;
+}
+
+#scroller .inner img,
+#scroller-bottom .inner img {
+  height: 64px;
+  margin: 0 1rem;
+  pointer-events: none;
+}
