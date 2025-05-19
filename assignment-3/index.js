@@ -48,27 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let mismatchTimeout = null;
   let firstCard = null, secondCard = null, lockBoard = false;
   let clicks = 0, matched = 0, totalPairs = 0, gameStarted = false;
+  let usedPowerUp = false;
 
   // Disable controls until start
   resetBtn.disabled = true;
   powerBtn.disabled = true;
-
-  // Dark/Light toggle
-  const themeToggle = document.createElement('button');
-  themeToggle.id = 'themeToggle';
-  controls.insertBefore(themeToggle, resetBtn);
-  let currentTheme = localStorage.getItem('theme') || 'light';
-  document.body.className = currentTheme;
-  updateToggleLabel();
-  themeToggle.addEventListener('click', () => {
-    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.body.className = currentTheme;
-    localStorage.setItem('theme', currentTheme);
-    updateToggleLabel();
-  });
-  function updateToggleLabel() {
-    themeToggle.textContent = currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
-  }
 
   // Type Theme dropdown
   const typeLabel = document.createElement('label');
@@ -120,6 +104,24 @@ document.addEventListener('DOMContentLoaded', () => {
     root.style.setProperty('--theme-bg', `rgba(${r},${g},${b},0.15)`);
   }
 
+  // Dark/Light toggle
+  const themeToggle = document.createElement('button');
+  themeToggle.id = 'themeToggle';
+  controls.insertBefore(themeToggle, typeLabel);
+  let currentTheme = localStorage.getItem('theme') || 'light';
+  document.body.className = currentTheme;
+  updateToggleLabel();
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.body.className = currentTheme;
+    localStorage.setItem('theme', currentTheme);
+    updateToggleLabel();
+  });
+
+  function updateToggleLabel() {
+    themeToggle.textContent = currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+  }
+
   // Fetch by type & build board
   function loadTypePokemon() {
     const t = typeSelect.value;
@@ -147,7 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!gameStarted) {
       const sec = timeLimits[difficultySelect.value];
       startTimer(sec);
-      resetBtn.disabled = powerBtn.disabled = false;
+      resetBtn.disabled = false;
+      powerBtn.disabled = usedPowerUp;
       startBtn.disabled = true;
       gameStarted = true;
     }
@@ -159,7 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     board.innerHTML = '';
     [firstCard, secondCard] = [null, null];
     lockBoard = false; clicks = matched = 0; gameStarted = false;
-    resetBtn.disabled = powerBtn.disabled = true;
+    usedPowerUp = false;
+    resetBtn.disabled = true;
+    powerBtn.disabled = true;
     startBtn.disabled = false;
 
     totalPairs = pairCounts[difficultySelect.value];
@@ -213,8 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-
-
   // Make card element
   function makeCard(imgUrl) {
     const card = document.createElement('div');
@@ -241,10 +244,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function flipCard(card) {
-    if (lockBoard || card === firstCard || card.classList.contains('matched')) return;
+    if (lockBoard ||
+      card === firstCard ||
+      card.classList.contains('matched')) {
+      return;
+    }
+    clicks++;
+    clicksEl.textContent = clicks;
     card.classList.add('flipped');
-    if (!firstCard) return firstCard = card;
-    secondCard = card; checkMatch(); clicksEl.textContent = ++clicks;
+    if (!firstCard) {
+      firstCard = card;
+      return;
+    }
+    secondCard = card;
+    checkMatch();
   }
 
   function checkMatch() {
@@ -342,7 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
       mismatchTimeout = null;
     }
 
+    usedPowerUp = true;
+    powerBtn.disabled = true;
     lockBoard = true;
+
     board.classList.add('locked');
     board.querySelectorAll('.card').forEach(c => c.classList.add('flipped'));
     setTimeout(() => {
