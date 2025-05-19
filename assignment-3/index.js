@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     steel: '#B7B7CE', fairy: '#D685AD'
   };
   const pairCounts = { easy: 6, medium: 9, hard: 12 };
-  const timeLimits = { easy: 60, medium: 90, hard: 120 };
+  const timeLimits = { easy: 15, medium: 30, hard: 60 };
 
   let timerInterval, timeLeft, initialTime;
   let mismatchTimeout = null;
